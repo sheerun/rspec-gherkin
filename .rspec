@@ -1,1 +1,1 @@
--r rspec-gherkin
+-r rspec-gherkin --color
