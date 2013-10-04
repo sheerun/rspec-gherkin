@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe RspecGherkin::Builder do
   context "with scenario outlines" do
-    let(:feature_file) { File.expand_path('../examples/scenario_outline.feature', File.dirname(__FILE__)) }
+    let(:feature_file) { File.expand_path('../features/scenario_outline.feature', File.dirname(__FILE__)) }
     let(:builder) { RspecGherkin::Builder.build(feature_file) }
     let(:feature) { builder.features.first }
 
@@ -29,7 +29,7 @@ describe RspecGherkin::Builder do
   end
 
   context "with example tables in scenario outlines" do
-    let(:feature_file) { File.expand_path('../examples/scenario_outline_table_substitution.feature', File.dirname(__FILE__)) }
+    let(:feature_file) { File.expand_path('../features/scenario_outline_table_substitution.feature', File.dirname(__FILE__)) }
     let(:builder) { RspecGherkin::Builder.build(feature_file) }
     let(:feature) { builder.features.first }
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'The CLI', :type => :integration do
   before do
-    @result = %x(rspec -fs examples/*.feature)
+    @result = %x(rspec -fs features/*.feature)
   end
 
   # it "shows the correct description" do
