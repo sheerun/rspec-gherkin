@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe 'The CLI', :type => :integration do
-  before do
+  it 'can run features' do
     @result = %x(rspec -fs features/*.feature)
+    puts @result
   end
 
   # it "shows the correct description" do
