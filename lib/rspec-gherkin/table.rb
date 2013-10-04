@@ -21,15 +21,6 @@ module RspecGherkin
       rows.map { |row| Hash[headers.zip(row)] }
     end
 
-    def rows_hash
-      raise WidthMismatch.new(2, width) unless width == 2
-      transpose.hashes.first
-    end
-
-    def transpose
-      self.class.new(raw.transpose)
-    end
-
     def each
       raw.each { |row| yield(row) }
     end
@@ -38,12 +29,6 @@ module RspecGherkin
 
     def width
       raw[0].size
-    end
-
-    class WidthMismatch < StandardError
-      def initialize(expected, actual)
-        super("Expected the table to be #{expected} columns wide, got #{actual}")
-      end
     end
   end
 end
