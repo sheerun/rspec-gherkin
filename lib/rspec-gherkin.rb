@@ -2,7 +2,6 @@ require "rspec-gherkin/version"
 require "rspec-gherkin/dsl"
 require "rspec-gherkin/execute"
 require "rspec-gherkin/builder"
-require "rspec-gherkin/placeholder"
 require "rspec-gherkin/table"
 
 module RspecGherkin
