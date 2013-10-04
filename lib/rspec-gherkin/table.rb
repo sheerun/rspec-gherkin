@@ -1,4 +1,4 @@
-module Turnip
+module RspecGherkin
   class Table
     attr_reader :raw
     alias_method :to_a, :raw

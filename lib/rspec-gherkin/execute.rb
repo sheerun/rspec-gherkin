@@ -1,4 +1,4 @@
-module Turnip
+module RspecGherkin
   module Execute
     def step(description, *extra_args)
       extra_args.concat(description.extra_args) if description.respond_to?(:extra_args)
@@ -9,12 +9,12 @@ module Turnip
       end.compact
 
       if matches.length == 0
-        raise Turnip::Pending, description
+        raise RspecGherkin::Pending, description
       end
 
       if matches.length > 1
         msg = ['Ambiguous step definitions'].concat(matches.map(&:trace)).join("\r\n")
-        raise Turnip::Ambiguous, msg
+        raise RspecGherkin::Ambiguous, msg
       end
 
       send(matches.first.method_name, *(matches.first.params + extra_args))

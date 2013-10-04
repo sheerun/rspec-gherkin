@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Turnip::Table do
+describe RspecGherkin::Table do
   let(:table) { described_class.new( raw ) }
   let(:raw) { [['foo', 'bar'], ['quox', '42']] }
 
@@ -65,7 +65,7 @@ describe Turnip::Table do
       let(:raw) { [["a", "b", "c"], ["1", "2", "3"]] }
 
       it 'raises an error' do
-        expect { table.rows_hash }.to raise_error Turnip::Table::WidthMismatch
+        expect { table.rows_hash }.to raise_error RspecGherkin::Table::WidthMismatch
       end
     end
   end

@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Turnip::Execute do
+describe RspecGherkin::Execute do
   let(:mod) { Module.new }
-  let(:obj) { Object.new.tap { |o| o.extend Turnip::Execute; o.extend mod } }
+  let(:obj) { Object.new.tap { |o| o.extend RspecGherkin::Execute; o.extend mod } }
 
   it "defines a step method and makes it callable" do
     mod.step("a test step") { "monkey" }
@@ -57,7 +57,7 @@ describe Turnip::Execute do
     mod.step("an :ambiguous step") {}
     expect {
       obj.step("an ambiguous step")
-    }.to raise_error(Turnip::Ambiguous)
+    }.to raise_error(RspecGherkin::Ambiguous)
   end
 
   it "shows useful information on the ambiguous steps" do
@@ -65,6 +65,6 @@ describe Turnip::Execute do
     mod.step("an :ambiguous step") {}
     expect {
       obj.step("an ambiguous step")
-    }.to raise_error(Turnip::Ambiguous, %r{(ambiguous).*(define_and_execute_spec.rb)})
+    }.to raise_error(RspecGherkin::Ambiguous, %r{(ambiguous).*(define_and_execute_spec.rb)})
   end
 end

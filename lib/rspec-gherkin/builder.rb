@@ -1,6 +1,6 @@
 require "gherkin"
 
-module Turnip
+module RspecGherkin
   class Builder
     module Tags
       def tags
@@ -40,7 +40,7 @@ module Turnip
       end
 
       def metadata_hash
-        super.merge(:type => Turnip.type, :turnip => true)
+        super.merge(:type => RspecGherkin.type, :rspecgherkin => true)
       end
     end
 
@@ -83,8 +83,8 @@ module Turnip
             scenario.steps = steps.map do |step|
               new_description = substitute(step.description, headers, row)
               new_extra_args = step.extra_args.map do |ea|
-                next ea unless ea.instance_of?(Turnip::Table)
-                Turnip::Table.new(ea.map {|t_row| t_row.map {|t_col| substitute(t_col, headers, row) } })
+                next ea unless ea.instance_of?(RspecGherkin::Table)
+                RspecGherkin::Table.new(ea.map {|t_row| t_row.map {|t_col| substitute(t_col, headers, row) } })
               end
               Step.new(new_description, new_extra_args, step.line)
             end
@@ -114,7 +114,7 @@ module Turnip
 
     class << self
       def build(feature_file)
-        Turnip::Builder.new.tap do |builder|
+        RspecGherkin::Builder.new.tap do |builder|
           parser = Gherkin::Parser::Parser.new(builder, true)
           parser.parse(File.read(feature_file), feature_file, 0)
         end
@@ -153,7 +153,7 @@ module Turnip
       if step.doc_string
         extra_args.push step.doc_string.value
       elsif step.rows
-        extra_args.push Turnip::Table.new(step.rows.map { |row| row.cells(&:value) })
+        extra_args.push RspecGherkin::Table.new(step.rows.map { |row| row.cells(&:value) })
       end
       @current_step_context.steps << Step.new(step.name, extra_args, step.line)
     end

@@ -1,17 +1,17 @@
-module Turnip
+module RspecGherkin
   module DSL
     def placeholder(name, &block)
-      Turnip::Placeholder.add(name, &block)
+      RspecGherkin::Placeholder.add(name, &block)
     end
 
     def step(description, &block)
-      Turnip::Steps.step(description, &block)
+      RspecGherkin::Steps.step(description, &block)
     end
 
     def steps_for(tag, &block)
       if tag.to_s == "global"
-        warn "[Turnip] using steps_for(:global) is deprecated, add steps to Turnip::Steps instead"
-        Turnip::Steps.module_eval(&block)
+        warn "[RspecGherkin] using steps_for(:global) is deprecated, add steps to RspecGherkin::Steps instead"
+        RspecGherkin::Steps.module_eval(&block)
       else
         Module.new do
           singleton_class.send(:define_method, :tag) { tag }

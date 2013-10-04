@@ -1,9 +1,9 @@
-# Turnip
+# RspecGherkin
 
 [![Build Status](https://secure.travis-ci.org/jnicklas/turnip.png)](http://travis-ci.org/jnicklas/turnip)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jnicklas/turnip)
 
-Turnip is a [Gherkin](https://github.com/cucumber/cucumber/wiki/Gherkin)
+RspecGherkin is a [Gherkin](https://github.com/cucumber/cucumber/wiki/Gherkin)
 extension for RSpec. It allows you to write tests in Gherkin and run them
 through your RSpec environment. Basically you can write cucumber features in
 RSpec.
@@ -44,7 +44,7 @@ Please create a topic branch for every separate change you make.
 
 ## Compatibility
 
-Turnip does not work on Ruby 1.8.X.
+RspecGherkin does not work on Ruby 1.8.X.
 
 ## Usage
 
@@ -95,7 +95,7 @@ use Ruby's normal inheritance chain to mix and match steps.
 
 ### Global steps
 
-Turnip has a special module called `Turnip::Steps`, which is automatically
+RspecGherkin has a special module called `RspecGherkin::Steps`, which is automatically
 included in RSpec. If you add steps to this module, they are available in all
 your features. As a convenience, there is a shortcut to doing this, just call
 `step` in the global namespace like this:
@@ -108,7 +108,7 @@ end
 
 ### Placeholders
 
-Note that unlike Cucumber, Turnip does not support regexps in step definitions.
+Note that unlike Cucumber, RspecGherkin does not support regexps in step definitions.
 You can however use placeholders in your step definitions, like this:
 
 ``` ruby
@@ -164,7 +164,7 @@ RSpec.configure do |config|
 end
 ```
 
-Turnip turns tags into RSpec metadata, so you can use RSpec's conditional
+RspecGherkin turns tags into RSpec metadata, so you can use RSpec's conditional
 include feature to include these steps only for those scenarios tagged the
 appropriate way. So even though the step is named the same, you can now use it
 in your feature files like so:
@@ -199,7 +199,7 @@ for an example.
 
 ### Where to place steps
 
-Turnip automatically loads your `spec_helper` file. From there you can place
+RspecGherkin automatically loads your `spec_helper` file. From there you can place
 your steps wherever you want, and load them however you like. For example, if
 you were to put your steps in `spec/steps`, you could load them like this:
 
@@ -207,7 +207,7 @@ you were to put your steps in `spec/steps`, you could load them like this:
 Dir.glob("spec/steps/**/*steps.rb") { |f| load f, true }
 ```
 
-Before loading your `spec_helper`, Turnip also tries to load a file called
+Before loading your `spec_helper`, RspecGherkin also tries to load a file called
 `turnip_helper` where you can setup anything specific to your turnip examples.
 You might find it beneficial to load your steps from this file so that they
 don't have to be loaded when you run your other tests.
@@ -247,7 +247,7 @@ end
 ### Methods as steps
 
 You can mark an existing method as a step. This will make it available in your
-Turnip features. For example:
+RspecGherkin features. For example:
 
 ``` ruby
 module MonsterSteps
@@ -262,7 +262,7 @@ end
 
 Do you want to be more specific in what to match in your step placeholders? Do
 you find it bothersome to have to constantly cast them to the correct type?
-Turnip supports custom placeholders to solve both problems, like this:
+RspecGherkin supports custom placeholders to solve both problems, like this:
 
 ``` ruby
 step "there are :count monsters" do |count|
@@ -303,7 +303,7 @@ contain named capture groups, e.g. `(?<color>blue|green)`.
 
 ## Table Steps
 
-Turnip also supports steps that take a table as a parameter similar to Cucumber:
+RspecGherkin also supports steps that take a table as a parameter similar to Cucumber:
 
 ``` cucumber
 Scenario: This is a feature with a table
@@ -314,10 +314,10 @@ Scenario: This is a feature with a table
   Then "Blaaarg" should have 23 hitpoints
   And "Moorg" should have 12 hitpoints
 ```
-The table is a `Turnip::Table` object which works in much the same way as Cucumber's
+The table is a `RspecGherkin::Table` object which works in much the same way as Cucumber's
 `Cucumber::Ast::Table` objects.
 
-E.g. converting the `Turnip::Table` to an array of hashes:
+E.g. converting the `RspecGherkin::Table` to an array of hashes:
 
 ``` ruby
 step "there are the following monsters:" do |table|
@@ -332,7 +332,7 @@ end
 
 Just require `turnip/capybara` in your `spec_helper`. You can now use the same
 tags you'd use in Cucumber to switch between drivers e.g.  `@javascript` or
-`@selenium`. Your Turnip features will also be run with the `:type => :feature`
+`@selenium`. Your RspecGherkin features will also be run with the `:type => :feature`
 metadata, so that Capybara is included and also any other extensions you might
 want to add.
 

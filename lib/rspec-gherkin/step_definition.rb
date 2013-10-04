@@ -1,4 +1,4 @@
-module Turnip
+module RspecGherkin
   class StepDefinition
     class Match < Struct.new(:step_definition, :params, :block)
       def expression; step_definition.expression; end
@@ -28,7 +28,7 @@ module Turnip
       if result
         params = result.captures
         @placeholder_names.each_with_index do |name, index|
-          params[index] = Turnip::Placeholder.apply(name.to_sym, params[index])
+          params[index] = RspecGherkin::Placeholder.apply(name.to_sym, params[index])
         end
         Match.new(self, params, block)
       end

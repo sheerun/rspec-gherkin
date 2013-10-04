@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Turnip::DSL do
-  let(:context) { stub.tap { |s| s.extend(Turnip::DSL) }}
-  let(:an_object) { Object.new.tap { |o| o.extend(Turnip::Execute) }}
+describe RspecGherkin::DSL do
+  let(:context) { stub.tap { |s| s.extend(RspecGherkin::DSL) }}
+  let(:an_object) { Object.new.tap { |o| o.extend(RspecGherkin::Execute) }}
   describe '.steps_for' do
     before do
       ::RSpec.stub(:configure)
@@ -34,26 +34,26 @@ describe Turnip::DSL do
       mod = context.steps_for(:global) do
         step("foo") { "foo" }
       end
-      an_object.extend Turnip::Steps
+      an_object.extend RspecGherkin::Steps
       an_object.step("foo").should == "foo"
     end
   end
 
   describe '.step' do
-    it 'adds steps to Turnip::Steps' do
+    it 'adds steps to RspecGherkin::Steps' do
       context.step('this is a test') { "foo" }
       context.step('this is another test') { "bar" }
-      an_object.extend Turnip::Steps
+      an_object.extend RspecGherkin::Steps
       an_object.step("this is a test").should == "foo"
     end
   end
 
   describe '.placeholder' do
-    before { Turnip::Placeholder.send(:placeholders).clear }
+    before { RspecGherkin::Placeholder.send(:placeholders).clear }
 
     it 'registers the placeholder globally' do
       context.placeholder('example') { true }
-      Turnip::Placeholder.send(:placeholders).should have_key('example')
+      RspecGherkin::Placeholder.send(:placeholders).should have_key('example')
     end
   end
 end

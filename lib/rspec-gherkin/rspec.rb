@@ -1,21 +1,21 @@
-require "turnip"
+require "rspec-gherkin"
 require "rspec"
 
-module Turnip
+module RspecGherkin
   module RSpec
 
     ##
     #
-    # This module hooks Turnip into RSpec by duck punching the load Kernel
-    # method. If the file is a feature file, we run Turnip instead!
+    # This module hooks RspecGherkin into RSpec by duck punching the load Kernel
+    # method. If the file is a feature file, we run RspecGherkin instead!
     #
     module Loader
       def load(*a, &b)
         if a.first.end_with?('.feature')
-          require_if_exists 'turnip_helper'
+          require_if_exists 'gherkin_helper'
           require_if_exists 'spec_helper'
 
-          Turnip::RSpec.run(a.first)
+          RspecGherkin::RSpec.run(a.first)
         else
           super
         end
@@ -37,12 +37,12 @@ module Turnip
     # proper support for pending steps, as well as nicer backtraces.
     #
     module Execute
-      include Turnip::Execute
+      include RspecGherkin::Execute
 
       def run_step(feature_file, step)
         begin
           step(step)
-        rescue Turnip::Pending => e
+        rescue RspecGherkin::Pending => e
           pending("No such step: '#{e}'")
         rescue StandardError => e
           e.backtrace.push "#{feature_file}:#{step.line}:in `#{step.description}'"
@@ -53,7 +53,7 @@ module Turnip
 
     class << self
       def run(feature_file)
-        Turnip::Builder.build(feature_file).features.each do |feature|
+        RspecGherkin::Builder.build(feature_file).features.each do |feature|
           describe feature.name, feature.metadata_hash do
             before do
               # This is kind of a hack, but it will make RSpec throw way nicer exceptions
@@ -79,10 +79,10 @@ module Turnip
   end
 end
 
-::RSpec::Core::Configuration.send(:include, Turnip::RSpec::Loader)
+::RSpec::Core::Configuration.send(:include, RspecGherkin::RSpec::Loader)
 
 ::RSpec.configure do |config|
-  config.include Turnip::RSpec::Execute, turnip: true
-  config.include Turnip::Steps, turnip: true
+  config.include RspecGherkin::RSpec::Execute, rspecgherkin: true
+  config.include RspecGherkin::Steps, rspecgherkin: true
   config.pattern << ",**/*.feature"
 end

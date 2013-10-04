@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Turnip::Builder do
+describe RspecGherkin::Builder do
   context "with scenario outlines" do
     let(:feature_file) { File.expand_path('../examples/scenario_outline.feature', File.dirname(__FILE__)) }
-    let(:builder) { Turnip::Builder.build(feature_file) }
+    let(:builder) { RspecGherkin::Builder.build(feature_file) }
     let(:feature) { builder.features.first }
 
 
@@ -30,7 +30,7 @@ describe Turnip::Builder do
 
   context "with example tables in scenario outlines" do
     let(:feature_file) { File.expand_path('../examples/scenario_outline_table_substitution.feature', File.dirname(__FILE__)) }
-    let(:builder) { Turnip::Builder.build(feature_file) }
+    let(:builder) { RspecGherkin::Builder.build(feature_file) }
     let(:feature) { builder.features.first }
 
     it "replaces placeholders in tables in steps" do
@@ -39,9 +39,9 @@ describe Turnip::Builder do
         "I attack the monster and do 13 points damage",
         "the monster should be dead"
       ])
-      table = feature.scenarios[0].steps[0].extra_args.find {|a| a.instance_of?(Turnip::Table)}
+      table = feature.scenarios[0].steps[0].extra_args.find {|a| a.instance_of?(RspecGherkin::Table)}
       table.hashes[0]['hit_points'].should == '10'
-      table = feature.scenarios[1].steps[0].extra_args.find {|a| a.instance_of?(Turnip::Table)}
+      table = feature.scenarios[1].steps[0].extra_args.find {|a| a.instance_of?(RspecGherkin::Table)}
       table.hashes[0]['hit_points'].should == '8'
     end
 

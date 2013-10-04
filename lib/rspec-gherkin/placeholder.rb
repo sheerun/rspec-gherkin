@@ -1,4 +1,4 @@
-module Turnip
+module RspecGherkin
   class Placeholder
     class Match < Struct.new(:regexp, :block);end
 
