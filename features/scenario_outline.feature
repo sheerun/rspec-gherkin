@@ -5,6 +5,6 @@ Feature: using scenario outlines
     Then the monster should be <state>
 
     Examples:
-      | hp   | damage | state   |
-      | 10   | 13     | dead    |
-      | 8    | 5      | alive   |
+      | hp     | damage | state   | happy |
+      | 10.0   | 13     | dead    | false |
+      | 8.0    | 5      | alive   | true  |

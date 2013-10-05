@@ -7,43 +7,16 @@ describe RspecGherkin::Builder do
     let(:feature) { builder.features.first }
 
 
-    it "extracts scenarios" do
+    it "extracts scenario" do
       feature.scenarios.map(&:name).should eq([
         'a simple outline',
         'a simple outline'
       ])
     end
 
-    it "replaces placeholders in steps" do
-      feature.scenarios[0].steps.map(&:description).should eq([
-        "there is a monster with 10 hitpoints",
-        "I attack the monster and do 13 points damage",
-        "the monster should be dead"
-      ])
-      feature.scenarios[1].steps.map(&:description).should eq([
-        "there is a monster with 8 hitpoints",
-        "I attack the monster and do 5 points damage",
-        "the monster should be alive"
-      ])
+    it "add additional arguments to scenarios" do
+      feature.scenarios[0].arguments.should eq([ 10.0, 13, "dead", false ])
+      feature.scenarios[1].arguments.should eq([ 8.0, 5, "alive", true ])
     end
-  end
-
-  context "with example tables in scenario outlines" do
-    let(:feature_file) { File.expand_path('../features/scenario_outline_table_substitution.feature', File.dirname(__FILE__)) }
-    let(:builder) { RspecGherkin::Builder.build(feature_file) }
-    let(:feature) { builder.features.first }
-
-    it "replaces placeholders in tables in steps" do
-      feature.scenarios[0].steps.map(&:description).should eq([
-        "there is a monster with hitpoints:",
-        "I attack the monster and do 13 points damage",
-        "the monster should be dead"
-      ])
-      table = feature.scenarios[0].steps[0].extra_args.find {|a| a.instance_of?(RspecGherkin::Table)}
-      table.hashes[0]['hit_points'].should == '10'
-      table = feature.scenarios[1].steps[0].extra_args.find {|a| a.instance_of?(RspecGherkin::Table)}
-      table.hashes[0]['hit_points'].should == '8'
-    end
-
   end
 end

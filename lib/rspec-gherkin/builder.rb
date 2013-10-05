@@ -45,10 +45,8 @@ module RspecGherkin
     end
 
     class Background
-      attr_reader :steps
       def initialize(raw)
         @raw = raw
-        @steps = []
       end
     end
 
@@ -56,46 +54,11 @@ module RspecGherkin
       include Tags
       include Name
 
-      attr_accessor :steps
+      attr_accessor :arguments
 
       def initialize(raw)
         @raw = raw
-        @steps = []
-      end
-    end
-
-    class ScenarioOutline
-      include Tags
-      include Name
-
-      attr_reader :steps
-
-      def initialize(raw)
-        @raw = raw
-        @steps = []
-      end
-
-      def to_scenarios(examples)
-        rows = examples.rows.map(&:cells)
-        headers = rows.shift
-        rows.map do |row|
-          Scenario.new(@raw).tap do |scenario|
-            scenario.steps = steps.map do |step|
-              new_description = substitute(step.description, headers, row)
-              new_extra_args = step.extra_args.map do |ea|
-                next ea unless ea.instance_of?(RspecGherkin::Table)
-                RspecGherkin::Table.new(ea.map {|t_row| t_row.map {|t_col| substitute(t_col, headers, row) } })
-              end
-              Step.new(new_description, new_extra_args, step.line)
-            end
-          end
-        end
-      end
-
-      private
-
-      def substitute(text, headers, row)
-        text.gsub(/<([^>]*)>/) { |_| Hash[headers.zip(row)][$1] }
+        @arguments = []
       end
     end
 
@@ -141,27 +104,58 @@ module RspecGherkin
     end
 
     def scenario_outline(outline)
-      @current_step_context = ScenarioOutline.new(outline)
+      @current_scenario_template = outline
     end
 
     def examples(examples)
-      @current_feature.scenarios.push(*@current_step_context.to_scenarios(examples))
+      rows_to_array(examples.rows).each do |arguments|
+        scenario = Scenario.new(@current_scenario_template)
+        scenario.arguments = arguments.map do |argument|
+          if numeric?(argument)
+            integer?(argument) ? argument.to_i : argument.to_f
+          elsif boolean?(argument)
+            to_bool(argument)
+          else
+            argument
+          end
+        end
+
+        @current_feature.scenarios << scenario
+      end
     end
 
-    def step(step)
-      extra_args = []
-      if step.doc_string
-        extra_args.push step.doc_string.value
-      elsif step.rows
-        extra_args.push RspecGherkin::Table.new(step.rows.map { |row| row.cells(&:value) })
-      end
-      @current_step_context.steps << Step.new(step.name, extra_args, step.line)
+    def step(*)
     end
 
     def uri(*)
     end
 
     def eof
+    end
+
+    private
+
+    def integer?(string)
+      return true if string =~ /^\d+$/
+    end
+
+    def numeric?(string)
+      return true if string =~ /^\d+$/
+      true if Float(string) rescue false
+    end
+
+    def boolean?(string)
+      string =~ (/(true|t|yes|y)$/i) ||
+      string =~ (/(false|f|no|n)$/i)
+    end
+
+    def to_bool(string)
+      return true if string =~ (/(true|t|yes|y|1)$/i)
+      return false if string =~ (/(false|f|no|n|0)$/i)
+    end
+
+    def rows_to_array(rows)
+      rows.map { |row| row.cells(&:value) }.drop(1)
     end
   end
 end
