@@ -6,7 +6,6 @@ describe RspecGherkin::Builder do
     let(:builder) { RspecGherkin::Builder.build(feature_file) }
     let(:feature) { builder.features.first }
 
-
     it "extracts scenario" do
       feature.scenarios.map(&:name).should eq([
         'a simple outline',

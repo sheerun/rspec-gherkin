@@ -55,9 +55,3 @@ module RspecGherkin
     end
   end
 end
-
-::RSpec::Core::Configuration.send(:include, RspecGherkin::RSpec::Loader)
-
-::RSpec.configure do |config|
-  config.pattern << ",**/*.feature"
-end

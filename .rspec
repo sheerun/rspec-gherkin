@@ -1,1 +1,3 @@
--r rspec-gherkin --color
+-r rspec-gherkin
+--color
+--tag ~feature

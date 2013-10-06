@@ -1,13 +1,19 @@
 module RspecGherkin
   module DSL
-    def feature(name, &block)
-      # RspecGherkin::Feature.add(name, &block)
-      context(name, &block)
+    module Global
+      def feature(name, &block)
+        describe("Feature: #{name}", :feature => true, &block)
+      end
     end
 
-    def scenario(name, &block)
-      # RspecGherkin::Scenario.add(name, &block)
-      context(name, &block)
+    module Rspec
+      def background(&block)
+        before(:each, &block)
+      end
+
+      def scenario(name, &block)
+        specify("Scenario: #{name}", &block)
+      end
     end
   end
 end
