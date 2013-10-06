@@ -1,4 +1,4 @@
-Feature: A simple feature
+Feature: Interpolation feature
   Scenario: Interpolation with quotes
     Given there is a monster called "John Smith"
     Then it should be called "John Smith"

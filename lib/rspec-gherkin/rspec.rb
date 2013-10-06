@@ -3,28 +3,40 @@ require "rspec"
 
 module RspecGherkin
   module RSpec
-
-    # This module hooks RspecGherkin into RSpec by duck punching the load Kernel
-    # method. If the file is a feature file, we run RspecGherkin instead.
     module Loader
-      def load(*a, &b)
-        if a.first.end_with?('.feature')
-          require_if_exists 'gherkin_helper'
-          require_if_exists 'spec_helper'
+      def load(*paths, &block)
 
-          RspecGherkin::RSpec.run(a.first)
-        else
-          super
+        # Override feature exclusion filter if running features
+        if paths.any? { |path| RspecGherkin.feature?(path) }
+          ::RSpec.configuration.filter_manager.exclusions.reject! do |key, value|
+            key == :feature || (key == :type && value == 'feature')
+          end
         end
-      end
 
-      private
+        paths = paths.map do |path|
+          if RspecGherkin.feature?(path)
+            spec_path = RspecGherkin.feature_to_spec(path)
+            if File.exist?(spec_path)
+              spec_path
+            else
+              RspecGherkin::Builder.build(path).features.each do |feature|
+                ::RSpec::Core::ExampleGroup.describe("Feature: #{feature.name}", :type => :feature, :feature => true) do
+                  it do
+                    example.metadata[:file_path] = spec_path
+                    example.metadata[:line_number] = 1
+                    pending('Not yet implemented')
+                  end
+                end.register
+              end
 
-      def require_if_exists(filename)
-        require filename
-      rescue LoadError => e
-        # Don't hide LoadErrors raised in the spec helper.
-        raise unless e.message.include?(filename)
+              nil
+            end
+          else
+            path
+          end
+        end.compact
+
+        super(*paths, &block) if paths.size > 0
       end
     end
 

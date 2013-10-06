@@ -38,10 +38,6 @@ module RspecGherkin
       def line
         @raw.line
       end
-
-      def metadata_hash
-        super.merge(:type => RspecGherkin.type, :rspecgherkin => true)
-      end
     end
 
     class Background
