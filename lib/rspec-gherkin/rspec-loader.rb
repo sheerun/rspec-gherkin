@@ -20,7 +20,9 @@ module RspecGherkin
               spec_path
             else
               RspecGherkin::Builder.build(path).features.each do |feature|
-                ::RSpec::Core::ExampleGroup.describe("Feature: #{feature.name}", :type => :feature, :feature => true) do
+                ::RSpec::Core::ExampleGroup.describe(
+                  "Feature: #{feature.name}", :type => :feature, :feature => true
+                ) do
                   it do
                     example.metadata[:file_path] = spec_path
                     example.metadata[:line_number] = 1
@@ -36,33 +38,18 @@ module RspecGherkin
           end
         end.compact
 
-        super(*paths, &block) if paths.size > 0
-      end
-    end
+        # Load needed features to RspecGherkin.features array
+        paths.each do |path|
+          if RspecGherkin.feature_spec?(path)
+            feature_path = RspecGherkin.spec_to_feature(path)
 
-    class << self
-      def run(feature_file)
-        RspecGherkin::Builder.build(feature_file).features.each do |feature|
-          describe feature.name, feature.metadata_hash do
-            before do
-              # This is kind of a hack, but it will make RSpec throw way nicer exceptions
-              example.metadata[:file_path] = feature_file
-
-              # feature.backgrounds.map(&:steps).flatten.each do |step|
-              #   run_step(feature_file, step)
-              # end
-            end
-            feature.scenarios.each do |scenario|
-              # describe scenario.name, scenario.metadata_hash do
-              #   it scenario.steps.map(&:description).join(' -> ') do
-              #     scenario.steps.each do |step|
-              #       run_step(feature_file, step)
-              #     end
-              #   end
-              # end
+            if File.exists?(feature_path)
+              RspecGherkin.features += RspecGherkin::Builder.build(feature_path).features
             end
           end
         end
+
+        super(*paths, &block) if paths.size > 0
       end
     end
   end

@@ -1,16 +1,25 @@
 require "rspec-gherkin/builder"
 require "rspec-gherkin/dsl"
 require "rspec-gherkin/execute"
-require "rspec-gherkin/rspec"
+require "rspec-gherkin/rspec-loader"
 require "rspec-gherkin/version"
 
 module RspecGherkin extend self
 
+  class << self
+    attr_accessor :features
+  end
+
   class Pending < StandardError; end
+  class Malformed < StandardError; end
   class Ambiguous < StandardError; end
 
   def feature?(path)
     !!path.match(mask_to_pattern(feature_mask))
+  end
+
+  def feature_spec?(path)
+    !!path.match(mask_to_pattern(spec_mask))
   end
 
   def feature_to_spec(path)
@@ -38,7 +47,10 @@ module RspecGherkin extend self
   def mask_to_replacement(mask)
     "#{mask.sub('**/*'){ '\\1' }}"
   end
+
 end
+
+RspecGherkin.features = []
 
 self.extend RspecGherkin::DSL::Global
 

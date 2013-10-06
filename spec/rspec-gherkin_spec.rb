@@ -12,6 +12,16 @@ describe RspecGherkin do
     end
   end
 
+  context '#feature_spec?' do
+    it 'recognizes if path is spec path' do
+      expect(RspecGherkin.feature_spec?(spec_path)).to eq(true)
+    end
+
+    it 'recognizes if path is not spec path' do
+      expect(RspecGherkin.feature_spec?(feature_path)).to eq(false)
+    end
+  end
+
   context '#feature_to_spec' do
     it 'properly translates feature file to spec file' do
       expect(RspecGherkin.feature_to_spec(feature_path)).to eq(spec_path)

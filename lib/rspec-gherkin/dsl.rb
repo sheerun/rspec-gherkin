@@ -1,7 +1,8 @@
 module RspecGherkin
   module DSL
     module Global
-      def feature(name, &block)
+      def feature(name = nil, &block)
+        raise ArgumentError.new("requires a name") if name.nil?
         describe("Feature: #{name}", :feature => true, &block)
       end
     end
@@ -11,7 +12,8 @@ module RspecGherkin
         before(:each, &block)
       end
 
-      def scenario(name, &block)
+      def scenario(name = nil, &block)
+        raise ArgumentError.new("requires a name") if name.nil?
         specify("Scenario: #{name}", &block)
       end
     end

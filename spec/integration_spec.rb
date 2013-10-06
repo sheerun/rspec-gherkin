@@ -27,7 +27,7 @@ describe 'The CLI', :type => :integration do
     end
 
     it 'passes all specs' do
-      expect(@result).to include('2 examples, 0 failures')
+      expect(@result).to include('3 examples, 0 failures')
     end
   end
 
