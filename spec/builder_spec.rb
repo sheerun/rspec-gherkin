@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe RspecGherkin::Builder do
+describe RSpecGherkin::Builder do
   context "with scenario outlines" do
     let(:feature_file) { File.expand_path('../features/scenario_outline.feature', File.dirname(__FILE__)) }
-    let(:builder) { RspecGherkin::Builder.build(feature_file) }
+    let(:builder) { RSpecGherkin::Builder.build(feature_file) }
     let(:feature) { builder.features.first }
 
     it "extracts scenario" do

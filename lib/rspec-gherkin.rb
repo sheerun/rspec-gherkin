@@ -4,7 +4,7 @@ require "rspec-gherkin/execute"
 require "rspec-gherkin/rspec-loader"
 require "rspec-gherkin/version"
 
-module RspecGherkin extend self
+module RSpecGherkin extend self
 
   class << self
     attr_accessor :features
@@ -29,7 +29,7 @@ module RspecGherkin extend self
   def spec_to_feature(path)
     path.sub(mask_to_pattern(spec_mask), mask_to_replacement(feature_mask))
   end
-  
+
   protected
 
   def spec_mask
@@ -50,12 +50,12 @@ module RspecGherkin extend self
 
 end
 
-RspecGherkin.features = []
+RSpecGherkin.features = []
 
-self.extend RspecGherkin::DSL::Global
+self.extend RSpecGherkin::DSL::Global
 
 ::RSpec.configure do |config|
-  config.extend RspecGherkin::DSL::Rspec
+  config.extend RSpecGherkin::DSL::Rspec
   config.pattern << ",**/*.feature"
   config.add_setting :feature_mapping
   config.feature_mapping = {
@@ -64,4 +64,4 @@ self.extend RspecGherkin::DSL::Global
   }
 end
 
-::RSpec::Core::Configuration.send(:include, RspecGherkin::RSpec::Loader)
+::RSpec::Core::Configuration.send(:include, RSpecGherkin::RSpec::Loader)

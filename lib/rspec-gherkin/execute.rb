@@ -1,4 +1,4 @@
-module RspecGherkin
+module RSpecGherkin
   module Execute
     def step(description, *extra_args)
       extra_args.concat(description.extra_args) if description.respond_to?(:extra_args)
@@ -9,12 +9,12 @@ module RspecGherkin
       end.compact
 
       if matches.length == 0
-        raise RspecGherkin::Pending, description
+        raise RSpecGherkin::Pending, description
       end
 
       if matches.length > 1
         msg = ['Ambiguous step definitions'].concat(matches.map(&:trace)).join("\r\n")
-        raise RspecGherkin::Ambiguous, msg
+        raise RSpecGherkin::Ambiguous, msg
       end
 
       send(matches.first.method_name, *(matches.first.params + extra_args))

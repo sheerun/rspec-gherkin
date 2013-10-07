@@ -4,7 +4,7 @@ require "rspec-gherkin/version"
 
 Gem::Specification.new do |s|
   s.name        = "rspec-gherkin"
-  s.version     = RspecGherkin::VERSION
+  s.version     = RSpecGherkin::VERSION
   s.authors     = ["Adam Stankiewicz"]
   s.email       = ["sheerun@sher.pl"]
   s.homepage    = ""

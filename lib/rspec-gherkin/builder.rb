@@ -1,6 +1,6 @@
 require "gherkin"
 
-module RspecGherkin
+module RSpecGherkin
   class Builder
     module Tags
       def tags
@@ -73,7 +73,7 @@ module RspecGherkin
 
     class << self
       def build(feature_file)
-        RspecGherkin::Builder.new.tap do |builder|
+        RSpecGherkin::Builder.new.tap do |builder|
           parser = Gherkin::Parser::Parser.new(builder, true)
           parser.parse(File.read(feature_file), feature_file, 0)
         end

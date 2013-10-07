@@ -1,10 +1,10 @@
-module RspecGherkin
+module RSpecGherkin
   module DSL
     module Global
       def feature(name = nil, &block)
         raise ArgumentError.new("requires a name") if name.nil?
 
-        matching_feature = RspecGherkin.features.find do |feature|
+        matching_feature = RSpecGherkin.features.find do |feature|
           feature.name == name
         end
 
