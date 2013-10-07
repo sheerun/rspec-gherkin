@@ -26,8 +26,44 @@ describe 'The CLI', :type => :integration do
       expect(@result).to include('Scenario: A simple scenario')
     end
 
-    it 'shows that spec implements non-existing scenario' do
-      expect(@result).to include("No matching scenario: 'Non-existing scenario'")
+    context 'non-existing scenario' do
+      it 'shows name of non-existing scenario' do
+        expect(@result).to include(
+          "Scenario: Non-existing scenario"
+        )
+      end
+
+      it 'shows that spec implements non-existing scenario' do
+        expect(@result).to include(
+          "No such scenario in 'features/no_scenario.feature'"
+        )
+      end
+
+      it 'shows line number where missing scenario is mentioned' do
+        expect(@result).to include(
+          "./spec/features/no_scenario_spec.rb:2"
+        )
+      end
+    end
+
+    context 'non-existing feature' do
+      it 'shows name of non-existing feature' do
+        expect(@result).to include(
+          "Feature: Missing feature"
+        )
+      end
+
+      it 'shows that spec implements non-existing feature' do
+        expect(@result).to include(
+          "No such feature in 'features/no_feature.feature'"
+        )
+      end
+
+      it 'shows line number where missing scenario is mentioned' do
+        expect(@result).to include(
+          "./spec/features/no_feature_spec.rb:3"
+        )
+      end
     end
 
     it 'passes all specs' do

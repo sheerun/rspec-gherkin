@@ -15,7 +15,13 @@ module RSpecGherkin
         else
           describe "Feature: #{name}", :type => :feature, :feature => true do
             it do
-              pending 'No matching feature file'
+              file_path, line_number = block.source_location
+              feature_path = RSpecGherkin.spec_to_feature(file_path, false)
+              example.metadata.merge!(
+                file_path: file_path,
+                line_number: line_number
+              )
+              pending "No such feature in '#{feature_path}'"
             end
           end
         end
@@ -44,9 +50,18 @@ module RSpecGherkin
             specify("Scenario: #{name}", &block)
           end
         else
-          it do
-            example.metadata[:description_args] = ""
-            pending "No matching scenario: '#{name}'"
+          # Heavy hacking on message format
+          specify name do
+            file_path, line_number = block.source_location
+            feature_path = RSpecGherkin.spec_to_feature(file_path, false)
+            example.metadata.merge!(
+              file_path: file_path,
+              line_number: line_number
+            )
+            example.metadata[:example_group].merge!(
+              description_args: ["Scenario:"]
+            )
+            pending "No such scenario in '#{feature_path}'"
           end
         end
       end

@@ -26,7 +26,8 @@ module RSpecGherkin extend self
     path.sub(mask_to_pattern(feature_mask), mask_to_replacement(spec_mask))
   end
 
-  def spec_to_feature(path)
+  def spec_to_feature(path, prefix = true)
+    path = path.match(mask_to_pattern(spec_mask))[0] unless prefix
     path.sub(mask_to_pattern(spec_mask), mask_to_replacement(feature_mask))
   end
 
