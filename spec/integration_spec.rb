@@ -3,13 +3,13 @@ require 'spec_helper'
 describe 'The CLI', :type => :integration do
   context 'runing features from features directory' do
     it 'ignores --tag ~feature flag when running features' do
-      expect(%x(rspec features --tag ~feature 2>&1)).
-        to include('18 examples, 0 failures, 16 pending')
+      expect(%x(rspec features --tag ~feature 2>&1).each_line.to_a.last).
+        to include('19 examples, 0 failures, 17 pending')
     end
 
     it 'ignores --tag ~type:feature flag when running features' do
-      expect(%x(rspec features --tag ~type:feature 2>&1)).
-        to include('18 examples, 0 failures, 16 pending')
+      expect(%x(rspec features --tag ~type:feature 2>&1).each_line.to_a.last).
+        to include('19 examples, 0 failures, 17 pending')
     end
   end
 
@@ -26,8 +26,12 @@ describe 'The CLI', :type => :integration do
       expect(@result).to include('Scenario: A simple scenario')
     end
 
+    it 'shows that spec implements non-existing scenario' do
+      expect(@result).to include("No matching scenario: 'Non-existing scenario'")
+    end
+
     it 'passes all specs' do
-      expect(@result).to include('3 examples, 0 failures')
+      expect(@result).to include('4 examples, 0 failures')
     end
   end
 

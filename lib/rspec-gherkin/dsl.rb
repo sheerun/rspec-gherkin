@@ -44,8 +44,9 @@ module RSpecGherkin
             specify("Scenario: #{name}", &block)
           end
         else
-          specify "Scenario: #{name}" do
-            pending 'No matching scenario'
+          it do
+            example.metadata[:description_args] = ""
+            pending "No matching scenario: '#{name}'"
           end
         end
       end
