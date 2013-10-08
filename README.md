@@ -149,6 +149,7 @@ It is an extension to it. `rspec-gherin` among others:
 4. Notifies if any specs have no matching features/scenarios
 5. Marks specs as pending if matching feature has been tagged as `@updated`
 6. Provides RSpec messages, indicating location of feature and spec files.
+7. Extracts examples from Scenario Outlines and passes them to specs.
 
 ## License
 
