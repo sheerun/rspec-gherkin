@@ -22,7 +22,7 @@ group :test do
 end
 ```
 
-## Usage
+## Basic Usage
 
 1. Put your requirements in `features` directory under application's root path:
 
@@ -64,6 +64,39 @@ end
     ```
 
 In specs you can use Capybara, FactoryGirl, helpers, and whatever you want.
+
+You can run both `*.feature` files and `_spec.rb` spec as usual.
+
+```shell
+# Run all features
+rspec features
+rspec --tag feature
+
+# Run individual features
+rspec features/manage_articles.feature
+rspec spec/features/manage_articles_spec.rb
+```
+
+You may want to add `--tag ~feature` to your `.rspec` file to not run
+features specs by default.
+
+## Configuration
+
+By default features in `features` directory are mapped to specs in `spec/features`.
+
+Also each feature has an additional metadata: `{ :type => :feature, :feature => true }`.
+
+You can change this by adding configuration options in `spec_helper`. Here are the defaults:
+
+```ruby
+RSpec.configure do |config|
+  config.feature_mapping = {
+    :feature => 'features/**/*.feature',
+    :spec => 'spec/features/**/*_spec.rb'
+  }
+  config.feature_metadata = { :type => :feature, :feature => :true }
+end
+```
 
 ## License
 
