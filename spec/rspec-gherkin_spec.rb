@@ -2,6 +2,9 @@ describe RSpecGherkin do
   let(:feature_path) { '/project/features/awesome-def_file.feature' }
   let(:spec_path) { '/project/spec/features/awesome-def_file_spec.rb' }
 
+  let(:short_feature_path) { 'features/awesome-def_file.feature' }
+  let(:short_spec_path) { 'spec/features/awesome-def_file_spec.rb' }
+
   context '#feature?' do
     it 'recognizes if path is feature path' do
       expect(RSpecGherkin.feature?(feature_path)).to eq(true)
@@ -26,11 +29,22 @@ describe RSpecGherkin do
     it 'properly translates feature file to spec file' do
       expect(RSpecGherkin.feature_to_spec(feature_path)).to eq(spec_path)
     end
+
+    it 'excludes prefix when requested' do
+      expect(RSpecGherkin.feature_to_spec(feature_path, false)).
+        to eq(short_spec_path)
+    end
   end
 
   context '#spec_to_feature' do
     it 'properly translates spec file to feature file' do
-      expect(RSpecGherkin.spec_to_feature(spec_path)).to eq(feature_path)
+      expect(RSpecGherkin.spec_to_feature(spec_path)).
+        to eq(feature_path)
+    end
+
+    it 'excludes prefix when requested' do
+      expect(RSpecGherkin.spec_to_feature(spec_path, false)).
+        to eq(short_feature_path)
     end
   end
 

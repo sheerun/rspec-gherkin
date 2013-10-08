@@ -1,5 +1,5 @@
 require "rspec-gherkin/builder"
-require "rspec-gherkin/dsl"
+require "rspec-gherkin/rspec-dsl"
 require "rspec-gherkin/rspec-loader"
 require "rspec-gherkin/version"
 
@@ -21,7 +21,8 @@ module RSpecGherkin extend self
     !!path.match(mask_to_pattern(spec_mask))
   end
 
-  def feature_to_spec(path)
+  def feature_to_spec(path, prefix = true)
+    path = path.match(mask_to_pattern(feature_mask))[0] unless prefix
     path.sub(mask_to_pattern(feature_mask), mask_to_replacement(spec_mask))
   end
 
