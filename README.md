@@ -19,6 +19,7 @@ Add this gem to `test` group in `Gemfile`:
 ```ruby
 group :test do
   gem 'rspec-gherkin'
+  gem 'capybara'
 end
 ```
 
