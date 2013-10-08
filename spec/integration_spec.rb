@@ -4,12 +4,12 @@ describe 'The CLI', :type => :integration do
   context 'runing features from features directory' do
     it 'ignores --tag ~feature flag when running features' do
       expect(%x(rspec features --tag ~feature 2>&1)).
-        to include('17 examples, 1 failure, 14 pending')
+        to include('5 examples, 1 failure, 2 pending')
     end
 
     it 'ignores --tag ~type:feature flag when running features' do
       expect(%x(rspec features --tag ~type:feature 2>&1)).
-        to include('17 examples, 1 failure, 14 pending')
+        to include('5 examples, 1 failure, 2 pending')
     end
   end
 
