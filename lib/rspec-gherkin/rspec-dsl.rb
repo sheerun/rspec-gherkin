@@ -1,4 +1,4 @@
-require "capybara/rspec" rescue nil
+require "capybara/rspec"
 
 class << self
   def feature(name = nil, new_metadata = {}, &block)
