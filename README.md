@@ -5,7 +5,7 @@
 
 Different approach to Gherkin features in RSpec. It is based on two premises:
 
-1. Requirements are written by **any person** in semi-formal, human-readable Gherkin.
+1. Requirements are written by **business** in semi-formal, human-readable Gherkin.
 2. Automation of those is done by **programmers** in formal, machine-readable RSpec.
 
 It resigns from the idea of regexp-parseable Cucumber features. As Uncle Bob [noticed in his article](http://blog.8thlight.com/uncle-bob/2013/09/26/AT-FAIL.html):
