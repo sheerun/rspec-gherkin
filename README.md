@@ -107,6 +107,19 @@ RSpec.configure do |config|
 end
 ```
 
+## FAQ
+
+*How it differs from `capybara/rspec`*
+
+It is an extension to it. `rspec-gherin` among others:
+
+1. Allows for running feature files directly.
+2. Marks as pending:
+  * features and scenarios that doesn't have any specs yet
+  * specs that doens't have any matching features and scenarios
+  * features tagged in Gherkin as `@updated`
+3. Provides better error messages, indicating location of feature and spec files.
+
 ## License
 
 This gem is MIT-licensed. You are awesome.
