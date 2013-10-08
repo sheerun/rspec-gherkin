@@ -14,12 +14,20 @@ It resigns from the idea of regexp-parseable Cucumber features. As Uncle Bob [no
 
 ## Installation
 
-Just add this gem to `test` group in `Gemfile`:
+Add this gem to `test` group in `Gemfile`:
 
 ```ruby
 group :test do
   gem 'rspec-gherkin'
 end
+```
+
+In your `spec_helper` include environment and `rspec-gherkin`:
+
+```ruby
+require File.expand_path('../../config/environment', __FILE__)
+require 'capybara/rails' # only for Rails
+require 'rspec-gherkin'
 ```
 
 ## Basic Usage
