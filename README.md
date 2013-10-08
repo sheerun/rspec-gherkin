@@ -117,7 +117,7 @@ It is an extension to it. `rspec-gherin` among others:
 2. Allows for running feature files directly
 3. Notifies if any features/scenarios have pending specs
 4. Notifies if any specs have no matching features/scenarios
-5. Marks specs as pending if matchinf feature has been tagged as `@updated`
+5. Marks specs as pending if matching feature has been tagged as `@updated`
 6. Provides RSpec messages, indicating location of feature and spec files.
 
 ## License
