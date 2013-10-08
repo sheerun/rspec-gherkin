@@ -5,8 +5,12 @@
 
 Different approach to Gherkin features in RSpec. It is based on two premises:
 
-1. Features are written by *any person* for *programmers* in Gherkin.
-2. Specs for them are written by *programmers* for *machine* in RSpec.
+1. Requirements are written by **any person** in semi-formal, human-readable Gherkin.
+2. Automation of those is done by **programmers** in formal, machine-readable RSpec.
+
+As Uncle Bob [noticed in his article](http://blog.8thlight.com/uncle-bob/2013/09/26/AT-FAIL.html):
+
+> I mean, the point was to get the *business* to provide a formal specification of the system so that the *programmers* could understand it. What in the name of heaven is the point of having the *programmers* write the formal specification so that the *programmers* can then understand it?
 
 ## Installation
 
