@@ -90,6 +90,35 @@ rspec spec/features/manage_articles_spec.rb
 You may want to add `--tag ~feature` to your `.rspec` file to not run
 slow features specs by default.
 
+## Scenario outline
+
+RSpec Gherkin has also support for Scenario Outlines.
+Just add additional params to your scenario.
+
+```
+Feature: using scenario outlines
+  Scenario Outline: a simple outline
+    Given there is a monster with <hp> hitpoints
+    When I attack the monster and do <damage> points damage
+    Then the monster should be <state>
+
+    Examples:
+      | hp     | damage | state   | happy |
+      | 10.0   | 13     | dead    | false |
+      | 8.0    | 5      | alive   | true  |
+```
+
+```ruby
+feature 'using scenario outlines' do
+  scenario 'a simple outline' do |hp, damage, state, happy|
+    expect(hp).to be_a(Float)
+    expect(damage).to be_a(Fixnum)
+    expect(state).to be_a(String)
+    expect([true, false]).to include happy
+  end
+end
+```
+
 ## Configuration
 
 By default features in `features` directory are mapped to specs in `spec/features`.
