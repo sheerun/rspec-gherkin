@@ -1,14 +1,17 @@
 module RSpecGherkin
   module DSL
     module Global
-      def feature(name = nil, &block)
+      def feature(name = nil, new_metadata = {}, &block)
+
         raise ArgumentError.new("requires a name") if name.nil?
+
+        new_metadata = ::RSpec.configuration.feature_metadata.merge(new_metadata)
 
         matching_feature = find_feature(name)
 
         if matching_feature
           if matching_feature.tags.include?('updated')
-            describe "Feature: #{name}", :type => :feature, :feature => true do
+            describe "Feature: #{name}", new_metadata do
               it do
                 file_path, line_number = block.source_location
                 feature_path = RSpecGherkin.spec_to_feature(file_path, false)
@@ -22,16 +25,11 @@ module RSpecGherkin
               end
             end
           else
-            describe(
-              "Feature: #{name}",
-              :type => :feature, :feature => true,
-              :current_feature => matching_feature,
-              &block
-            )
+            describe("Feature: #{name}", new_metadata.merge(:current_feature => matching_feature), &block)
           end
 
         else
-          describe "Feature: #{name}", :type => :feature, :feature => true do
+          describe "Feature: #{name}", new_metadata do
             it do
               file_path, line_number = block.source_location
               feature_path = RSpecGherkin.spec_to_feature(file_path, false)
@@ -60,14 +58,14 @@ module RSpecGherkin
         before(:each, &block)
       end
 
-      def scenario(name = nil, &block)
+      def scenario(name = nil, new_metadata = {}, &block)
         raise ArgumentError.new("requires a name") if name.nil?
 
-        matching_scenario = find_scenario(metadata[:current_feature], name)
+        matching_scenario = find_scenario(self.metadata[:current_feature], name)
 
         if matching_scenario
           if matching_scenario.tags.include?('updated')
-            specify name do
+            specify name, new_metadata do
               file_path, line_number = block.source_location
               feature_path = RSpecGherkin.spec_to_feature(file_path, false)
               example.metadata.merge!(
@@ -82,15 +80,15 @@ module RSpecGherkin
                 "    #  Scenario file: '#{feature_path}'"
             end
           elsif matching_scenario.arguments
-            specify "Scenario: #{name}" do
+            specify "Scenario: #{name}", new_metadata do
               instance_exec(*matching_scenario.arguments, &block)
             end
           else
-            specify("Scenario: #{name}", &block)
+            specify("Scenario: #{name}", new_metadata, &block)
           end
         else
           # Heavy hacking on message format
-          specify name do
+          specify name, new_metadata do
             file_path, line_number = block.source_location
             feature_path = RSpecGherkin.spec_to_feature(file_path, false)
             example.metadata.merge!(

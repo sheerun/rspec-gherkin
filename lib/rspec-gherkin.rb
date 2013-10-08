@@ -59,10 +59,12 @@ self.extend RSpecGherkin::DSL::Global
   config.extend RSpecGherkin::DSL::Rspec
   config.pattern << ",**/*.feature"
   config.add_setting :feature_mapping
+  config.add_setting :feature_metadata
   config.feature_mapping = {
     :feature => 'features/**/*.feature',
     :spec => 'spec/features/**/*_spec.rb'
   }
+  config.feature_metadata = { :type => :feature, :feature => :true }
 end
 
 ::RSpec::Core::Configuration.send(:include, RSpecGherkin::RSpec::Loader)
