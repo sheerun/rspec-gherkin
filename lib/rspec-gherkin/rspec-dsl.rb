@@ -2,46 +2,26 @@ module RSpecGherkin
   module DSL
     module Global
       def feature(name = nil, new_metadata = {}, &block)
-
         raise ArgumentError.new("requires a name") if name.nil?
 
         new_metadata = ::RSpec.configuration.feature_metadata.merge(new_metadata)
-
         matching_feature = find_feature(name)
 
         if matching_feature
           if matching_feature.tags.include?('updated')
-            describe "Feature: #{name}", new_metadata do
-              it do
-                file_path, line_number = block.source_location
-                feature_path = RSpecGherkin.spec_to_feature(file_path, false)
-                example.metadata.merge!(
-                  file_path: file_path,
-                  line_number: line_number
-                )
-                pending "Feature has been marked as updated\n" +
-                  "    #  Update specs for this feature and remove the @updated tag\n" +
-                  "    #  Feature file: '#{feature_path}'"
-              end
-            end
+            pending_feature(name, new_metadata, block.source_location, [
+              "Feature has been marked as updated",
+              "Update specs for this feature and remove the @updated tag",
+              "Feature file: '#{feature_path(block.source_location)}'"
+            ])
           else
             describe("Feature: #{name}", new_metadata.merge(:current_feature => matching_feature), &block)
           end
-
         else
-          describe "Feature: #{name}", new_metadata do
-            it do
-              file_path, line_number = block.source_location
-              feature_path = RSpecGherkin.spec_to_feature(file_path, false)
-              example.metadata.merge!(
-                file_path: file_path,
-                line_number: line_number
-              )
-              pending "No such feature in '#{feature_path}'"
-            end
-          end
+          pending_feature(name, new_metadata, block.source_location,
+            "No such feature in '#{feature_path(block.source_location)}'"
+          )
         end
-
       end
 
       private
@@ -49,6 +29,23 @@ module RSpecGherkin
       def find_feature(name)
         RSpecGherkin.features.find do |feature|
           feature.name == name
+        end
+      end
+
+      def feature_path(spec_location)
+        RSpecGherkin.spec_to_feature(spec_location.first, false)
+      end
+
+      def pending_feature(name, new_metadata, spec_location, reason)
+        describe "Feature: #{name}", new_metadata do
+          it do
+            example.metadata.merge!(
+              file_path: spec_location[0],
+              line_number: spec_location[1]
+            )
+
+            pending [*reason].join("\n    #  ")
+          end
         end
       end
     end
@@ -65,20 +62,11 @@ module RSpecGherkin
 
         if matching_scenario
           if matching_scenario.tags.include?('updated')
-            specify name, new_metadata do
-              file_path, line_number = block.source_location
-              feature_path = RSpecGherkin.spec_to_feature(file_path, false)
-              example.metadata.merge!(
-                file_path: file_path,
-                line_number: line_number
-              )
-              example.metadata[:example_group].merge!(
-                description_args: ["Scenario:"]
-              )
-              pending "Scenario has been marked as updated\n" +
-                "    #  Update specs for this scenario and remove the @updated tag\n" +
-                "    #  Scenario file: '#{feature_path}'"
-            end
+            pending_scenario(name, new_metadata, block.source_location, [
+              "Scenario has been marked as updated",
+              "Update specs for this scenario and remove the @updated tag",
+              "Feature file: '#{feature_path(block.source_location)}'"
+            ])
           elsif matching_scenario.arguments
             specify "Scenario: #{name}", new_metadata do
               instance_exec(*matching_scenario.arguments, &block)
@@ -87,19 +75,9 @@ module RSpecGherkin
             specify("Scenario: #{name}", new_metadata, &block)
           end
         else
-          # Heavy hacking on message format
-          specify name, new_metadata do
-            file_path, line_number = block.source_location
-            feature_path = RSpecGherkin.spec_to_feature(file_path, false)
-            example.metadata.merge!(
-              file_path: file_path,
-              line_number: line_number
-            )
-            example.metadata[:example_group].merge!(
-              description_args: ["Scenario:"]
-            )
-            pending "No such scenario in '#{feature_path}'"
-          end
+          pending_scenario(name, new_metadata, block.source_location,
+            "No such scenario in '#{feature_path(block.source_location)}'"
+          )
         end
       end
 
@@ -108,6 +86,23 @@ module RSpecGherkin
       def find_scenario(feature, name)
         feature.scenarios.find do |scenario|
           scenario.name == name
+        end
+      end
+
+      def feature_path(spec_location)
+        RSpecGherkin.spec_to_feature(spec_location.first, false)
+      end
+
+      def pending_scenario(name, new_metadata, spec_location, reason)
+        specify name, new_metadata do
+          example.metadata.merge!(
+            file_path: spec_location[0],
+            line_number: spec_location[1]
+          )
+          example.metadata[:example_group].merge!(
+            description_args: ["Scenario:"]
+          )
+          pending [*reason].join("\n    #  ")
         end
       end
     end
