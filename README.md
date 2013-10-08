@@ -26,9 +26,11 @@ end
 
 1. Put your requirements in `features` directory under application's root path:
 
-  `features/manage_articles.feature`
+  ```
+  features/manage_articles.feature
+  ```
 
-  ```gherkin
+  ```
   Feature: Manage Articles
     In order to make a blog
     As an author
@@ -43,7 +45,9 @@ end
 
 2. Put specs for for those features in `spec/features` directory:
 
-  `spec/features/manage_articles_spec.rb`
+  ```
+  spec/features/manage_articles_spec.rb
+  ```
 
   ```ruby
   require 'spec_helper'
