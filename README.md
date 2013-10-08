@@ -67,9 +67,10 @@ In specs you can use Capybara, FactoryGirl, helpers, and whatever you want.
 
 You can run both `*.feature` files and `_spec.rb` spec as usual.
 
-```shell
+```sh
 # Run all features
 rspec features
+rspec spec/features
 rspec --tag feature
 
 # Run individual features
@@ -78,7 +79,7 @@ rspec spec/features/manage_articles_spec.rb
 ```
 
 You may want to add `--tag ~feature` to your `.rspec` file to not run
-features specs by default.
+slow features specs by default.
 
 ## Configuration
 
