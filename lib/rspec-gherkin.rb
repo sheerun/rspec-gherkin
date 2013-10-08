@@ -1,6 +1,5 @@
 require "rspec-gherkin/builder"
 require "rspec-gherkin/dsl"
-require "rspec-gherkin/execute"
 require "rspec-gherkin/rspec-loader"
 require "rspec-gherkin/version"
 
