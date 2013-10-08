@@ -4,9 +4,7 @@ module RSpecGherkin
       def feature(name = nil, &block)
         raise ArgumentError.new("requires a name") if name.nil?
 
-        matching_feature = RSpecGherkin.features.find do |feature|
-          feature.name == name
-        end
+        matching_feature = find_feature(name)
 
         if matching_feature
           if matching_feature.tags.include?('updated')
@@ -47,6 +45,14 @@ module RSpecGherkin
         end
 
       end
+
+      private
+
+      def find_feature(name)
+        RSpecGherkin.features.find do |feature|
+          feature.name == name
+        end
+      end
     end
 
     module Rspec
@@ -57,9 +63,7 @@ module RSpecGherkin
       def scenario(name = nil, &block)
         raise ArgumentError.new("requires a name") if name.nil?
 
-        matching_scenario = metadata[:current_feature].scenarios.find do |scenario|
-          scenario.name == name
-        end
+        matching_scenario = find_scenario(metadata[:current_feature], name)
 
         if matching_scenario
           if matching_scenario.tags.include?('updated')
@@ -98,6 +102,14 @@ module RSpecGherkin
             )
             pending "No such scenario in '#{feature_path}'"
           end
+        end
+      end
+
+      private
+
+      def find_scenario(feature, name)
+        feature.scenarios.find do |scenario|
+          scenario.name == name
         end
       end
     end
