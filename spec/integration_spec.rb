@@ -3,19 +3,23 @@ require 'spec_helper'
 describe 'The CLI', :type => :integration do
   context 'runing features from features directory' do
     it 'ignores --tag ~feature flag when running features' do
-      expect(%x(rspec features --tag ~feature 2>&1).each_line.to_a.last).
-        to include('19 examples, 0 failures, 17 pending')
+      expect(%x(rspec features --tag ~feature 2>&1)).
+        to include('17 examples, 1 failure, 14 pending')
     end
 
     it 'ignores --tag ~type:feature flag when running features' do
-      expect(%x(rspec features --tag ~type:feature 2>&1).each_line.to_a.last).
-        to include('19 examples, 0 failures, 17 pending')
+      expect(%x(rspec features --tag ~type:feature 2>&1)).
+        to include('17 examples, 1 failure, 14 pending')
     end
   end
 
   context 'runing features specs on their own' do
     before(:all) do
       @result = %x(rspec --tag feature --format documentation 2>&1)
+    end
+
+    it 'passes all specs' do
+      expect(@result).to include('5 examples, 1 failure, 2 pending')
     end
 
     it 'prepends features with "Feature: " prefix' do
@@ -64,10 +68,6 @@ describe 'The CLI', :type => :integration do
           "./spec/features/no_feature_spec.rb:3"
         )
       end
-    end
-
-    it 'passes all specs' do
-      expect(@result).to include('4 examples, 0 failures')
     end
   end
 

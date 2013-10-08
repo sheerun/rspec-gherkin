@@ -10,4 +10,8 @@ feature 'A simple feature' do
   scenario 'A simple scenario' do
     expect(@number).to eq(42)
   end
+
+  scenario 'Raising error' do
+    raise ArgumentError.new("Your argument is invalid!")
+  end
 end
