@@ -24,40 +24,40 @@ end
 
 ## Usage
 
-As in Cucumber, put your feature files in `features` directory under application's root directory:
+1. Put your requirements in `features` directory under application's root path:
 
-**features/manage_articles.feature**
+  `features/manage_articles.feature`
 
-```gherkin
-Feature: Manage Articles
-  In order to make a blog
-  As an author
-  I want to create and manage articles
+  ```gherkin
+  Feature: Manage Articles
+    In order to make a blog
+    As an author
+    I want to create and manage articles
 
-  Scenario: Articles List
-    Given I have articles titled Pizza, Breadsticks
-    When I go to the list of articles
-    Then I should see "Pizza"
-    And I should see "Breadsticks"
-```
+    Scenario: Articles List
+      Given I have articles titled Pizza, Breadsticks
+      When I go to the list of articles
+      Then I should see "Pizza"
+      And I should see "Breadsticks"
+  ```
 
-Then, put specs for for those features in `spec/features` directory:
+2. Put specs for for those features in `spec/features` directory:
 
-**spec/features/manage_articles_spec.rb**
+  `spec/features/manage_articles_spec.rb`
 
-```ruby
-require 'spec_helper'
+  ```ruby
+  require 'spec_helper'
 
-feature 'Manage Articles' do
-  scenario 'Articles List' do
-    create(:article, :title => "Pizza")
-    create(:article, :title => "Breadsticks")
-    visit articles_path
-    expect(page).to have_content 'Pizza'
-    expect(page).to have_content 'Breadsticks'
+  feature 'Manage Articles' do
+    scenario 'Articles List' do
+      create(:article, :title => "Pizza")
+      create(:article, :title => "Breadsticks")
+      visit articles_path
+      expect(page).to have_content 'Pizza'
+      expect(page).to have_content 'Breadsticks'
+    end
   end
-end
-```
+  ```
 
 In specs you can use Capybara, FactoryGirl, helpers, and whatever you want.
 
