@@ -14,12 +14,14 @@ It resigns from the idea of regexp-parseable Cucumber features. As Uncle Bob [no
 
 ## Installation
 
-Add to your `Gemfile` and run `bundle install`:
-
 ```ruby
 group :test do
   gem 'rspec-gherkin'
 end
+```
+
+```bash
+bundle install
 ```
 
 ## License
