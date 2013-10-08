@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Adam Stankiewicz"]
   s.email       = ["sheerun@sher.pl"]
   s.homepage    = ""
-  s.summary     = %q{New approach to Gherkin features in RSpec}
-  s.description = %q{New approach to Gherkin features in RSpec}
+  s.summary     = %q{Different approach to Gherkin features in RSpec}
+  s.description = %q{Different approach to Gherkin features in RSpec}
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
