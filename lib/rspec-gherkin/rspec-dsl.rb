@@ -1,55 +1,57 @@
-module RSpecGherkin
-  module DSL
-    module Global
-      def feature(name = nil, new_metadata = {}, &block)
-        raise ArgumentError.new("requires a name") if name.nil?
+require "capybara/rspec" rescue nil
 
-        new_metadata = ::RSpec.configuration.feature_metadata.merge(new_metadata)
-        matching_feature = find_feature(name)
+class << self
+  def feature(name = nil, new_metadata = {}, &block)
+    raise ArgumentError.new("requires a name") if name.nil?
 
-        if matching_feature
-          if matching_feature.tags.include?('updated')
-            pending_feature(name, new_metadata, block.source_location, [
-              "Feature has been marked as updated",
-              "Update specs for this feature and remove the @updated tag",
-              "Feature file: '#{feature_path(block.source_location)}'"
-            ])
-          else
-            describe("Feature: #{name}", new_metadata.merge(:current_feature => matching_feature), &block)
-          end
-        else
-          pending_feature(name, new_metadata, block.source_location,
-            "No such feature in '#{feature_path(block.source_location)}'"
-          )
-        end
+    new_metadata = ::RSpec.configuration.feature_metadata.merge(new_metadata)
+    matching_feature = find_feature(name)
+
+    if matching_feature
+      if matching_feature.tags.include?('updated')
+        pending_feature(name, new_metadata, block.source_location, [
+          "Feature has been marked as updated",
+          "Update specs for this feature and remove the @updated tag",
+          "Feature file: '#{feature_path(block.source_location)}'"
+        ])
+      else
+        describe("Feature: #{name}", new_metadata.merge(:current_feature => matching_feature), &block)
       end
+    else
+      pending_feature(name, new_metadata, block.source_location,
+        "No such feature in '#{feature_path(block.source_location)}'"
+      )
+    end
+  end
 
-      private
+  private
 
-      def find_feature(name)
-        RSpecGherkin.features.find do |feature|
-          feature.name == name
-        end
-      end
+  def find_feature(name)
+    RSpecGherkin.features.find do |feature|
+      feature.name == name
+    end
+  end
 
-      def feature_path(spec_location)
-        RSpecGherkin.spec_to_feature(spec_location.first, false)
-      end
+  def feature_path(spec_location)
+    RSpecGherkin.spec_to_feature(spec_location.first, false)
+  end
 
-      def pending_feature(name, new_metadata, spec_location, reason)
-        describe "Feature: #{name}", new_metadata do
-          it do
-            example.metadata.merge!(
-              file_path: spec_location[0],
-              line_number: spec_location[1]
-            )
+  def pending_feature(name, new_metadata, spec_location, reason)
+    describe "Feature: #{name}", new_metadata do
+      it do
+        example.metadata.merge!(
+          file_path: spec_location[0],
+          line_number: spec_location[1]
+        )
 
-            pending [*reason].join("\n    #  ")
-          end
-        end
+        pending [*reason].join("\n    #  ")
       end
     end
+  end
+end
 
+module RSpecGherkin
+  module DSL
     module Rspec
       def background(&block)
         before(:each, &block)

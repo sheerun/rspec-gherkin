@@ -53,8 +53,6 @@ end
 
 RSpecGherkin.features = []
 
-self.extend RSpecGherkin::DSL::Global
-
 ::RSpec.configure do |config|
   config.extend RSpecGherkin::DSL::Rspec
   config.pattern << ",**/*.feature"
