@@ -3,10 +3,10 @@
 [travis-img-url]: https://travis-ci.org/sheerun/rspec-gherkin.png
 [travis-url]: https://travis-ci.org/rspec-gherkin
 
-Different approach to <font color="green">Gherkin</font> features in RSpec. It is based on two premises:
+Different approach to Gherkin features in RSpec. It is based on two premises:
 
-1. Features are written by anyone, and need to be underdestandable by programmers.
-2. Specs for Features are written by programmers and are underdestandable by computer.
+1. Features are written by *any person* for *programmers* in Gherkin.
+2. Specs for them are written by *programmers* for *machine* in RSpec.
 
 ## Installation
 
