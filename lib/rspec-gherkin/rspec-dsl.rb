@@ -9,9 +9,29 @@ module RSpecGherkin
         end
 
         if matching_feature
-          describe("Feature: #{name}",
-                   :type => :feature, :feature => true, :current_feature => matching_feature,
-                   &block)
+          if matching_feature.tags.include?('updated')
+            describe "Feature: #{name}", :type => :feature, :feature => true do
+              it do
+                file_path, line_number = block.source_location
+                feature_path = RSpecGherkin.spec_to_feature(file_path, false)
+                example.metadata.merge!(
+                  file_path: file_path,
+                  line_number: line_number
+                )
+                pending "Feature has been marked as updated\n" +
+                  "    #  Update specs for this feature and remove the @updated tag\n" +
+                  "    #  Feature file: '#{feature_path}'"
+              end
+            end
+          else
+            describe(
+              "Feature: #{name}",
+              :type => :feature, :feature => true,
+              :current_feature => matching_feature,
+              &block
+            )
+          end
+
         else
           describe "Feature: #{name}", :type => :feature, :feature => true do
             it do
@@ -42,7 +62,22 @@ module RSpecGherkin
         end
 
         if matching_scenario
-          if matching_scenario.arguments
+          if matching_scenario.tags.include?('updated')
+            specify name do
+              file_path, line_number = block.source_location
+              feature_path = RSpecGherkin.spec_to_feature(file_path, false)
+              example.metadata.merge!(
+                file_path: file_path,
+                line_number: line_number
+              )
+              example.metadata[:example_group].merge!(
+                description_args: ["Scenario:"]
+              )
+              pending "Scenario has been marked as updated\n" +
+                "    #  Update specs for this scenario and remove the @updated tag\n" +
+                "    #  Scenario file: '#{feature_path}'"
+            end
+          elsif matching_scenario.arguments
             specify "Scenario: #{name}" do
               instance_exec(*matching_scenario.arguments, &block)
             end

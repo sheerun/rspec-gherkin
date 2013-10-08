@@ -4,12 +4,12 @@ describe 'The CLI', :type => :integration do
   context 'runing features from features directory' do
     it 'ignores --tag ~feature flag when running features' do
       expect(%x(rspec features --tag ~feature 2>&1)).
-        to include('5 examples, 1 failure, 2 pending')
+        to include('7 examples, 1 failure, 3 pending')
     end
 
     it 'ignores --tag ~type:feature flag when running features' do
       expect(%x(rspec features --tag ~type:feature 2>&1)).
-        to include('5 examples, 1 failure, 2 pending')
+        to include('7 examples, 1 failure, 3 pending')
     end
   end
 
@@ -19,7 +19,7 @@ describe 'The CLI', :type => :integration do
     end
 
     it 'passes all specs' do
-      expect(@result).to include('5 examples, 1 failure, 2 pending')
+      expect(@result).to include('8 examples, 1 failure, 4 pending')
     end
 
     it 'prepends features with "Feature: " prefix' do
@@ -66,6 +66,20 @@ describe 'The CLI', :type => :integration do
       it 'shows line number where missing scenario is mentioned' do
         expect(@result).to include(
           "./spec/features/no_feature_spec.rb:3"
+        )
+      end
+    end
+
+    context 'updated features and scenarios' do
+      it 'recognizes and notifies when feature is marked as @updated' do
+        expect(@result).to include(
+          'Feature has been marked as updated'
+        )
+      end
+
+      it 'recognizes and notifies when scenario is marked as @updated' do
+        expect(@result).to include(
+          'Scenario has been marked as updated'
         )
       end
     end
