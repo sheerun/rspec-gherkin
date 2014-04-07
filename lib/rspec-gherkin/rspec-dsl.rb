@@ -39,12 +39,13 @@ class << self
   def pending_feature(name, new_metadata, spec_location, reason)
     describe "Feature: #{name}", new_metadata do
       it do
-        example.metadata.merge!(
+        ::RSpec.current_example.metadata.merge!(
           file_path: spec_location[0],
           line_number: spec_location[1]
         )
 
         pending [*reason].join("\n    #  ")
+        raise "pending"
       end
     end
   end
@@ -97,14 +98,15 @@ module RSpecGherkin
 
       def pending_scenario(name, new_metadata, spec_location, reason)
         specify name, new_metadata do
-          example.metadata.merge!(
+          ::RSpec.current_example.metadata.merge!(
             file_path: spec_location[0],
             line_number: spec_location[1]
           )
-          example.metadata[:example_group].merge!(
+          ::RSpec.current_example.metadata[:example_group].merge!(
             description_args: ["Scenario:"]
           )
           pending [*reason].join("\n    #  ")
+          raise "pending"
         end
       end
     end

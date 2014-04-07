@@ -16,11 +16,11 @@ feature 'A simple feature' do
   end
 
   scenario 'Diferant metadata type', :type => :controller, :feature => false do
-    expect(example.metadata[:type]).to eq(:controller)
-    expect(example.metadata[:feature]).to eq(false)
+    expect(::RSpec.current_example.metadata[:type]).to eq(:controller)
+    expect(::RSpec.current_example.metadata[:feature]).to eq(false)
   end
 
   scenario 'Custom metadata tag', :custom => "foobar" do
-    expect(example.metadata[:custom]).to eq("foobar")
+    expect(::RSpec.current_example.metadata[:custom]).to eq("foobar")
   end
 end

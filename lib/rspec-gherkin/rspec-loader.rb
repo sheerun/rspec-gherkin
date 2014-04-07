@@ -24,8 +24,8 @@ module RSpecGherkin
                   "Feature: #{feature.name}", :type => :feature, :feature => true
                 ) do
                   it do
-                    example.metadata[:file_path] = spec_path
-                    example.metadata[:line_number] = 1
+                    ::RSpec.current_example.metadata[:file_path] = spec_path
+                    ::RSpec.current_example.metadata[:line_number] = 1
                     pending('Not yet implemented')
                   end
                 end.register
