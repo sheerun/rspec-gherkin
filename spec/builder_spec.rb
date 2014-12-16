@@ -7,15 +7,12 @@ describe RSpecGherkin::Builder do
     let(:feature) { builder.features.first }
 
     it "extracts scenario" do
-      feature.scenarios.map(&:name).should eq([
-        'a simple outline',
-        'a simple outline'
-      ])
+      expect(feature.scenarios.map(&:name)).to eq(['a simple outline', 'a simple outline'])
     end
 
     it "add additional arguments to scenarios" do
-      feature.scenarios[0].arguments.should eq([ 10.0, 13, "dead", false ])
-      feature.scenarios[1].arguments.should eq([ 8.0, 5, "alive", true ])
+      expect(feature.scenarios[0].arguments).to eq([10.0, 13, "dead", false])
+      expect(feature.scenarios[1].arguments).to eq([8.0, 5, "alive", true])
     end
   end
 end

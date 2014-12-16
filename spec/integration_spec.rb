@@ -1,19 +1,17 @@
 require 'spec_helper'
 
 describe 'The CLI', :type => :integration do
-  context 'runing features from features directory' do
+  context 'running features from features directory' do
     it 'ignores --tag ~feature flag when running features' do
-      expect(%x(rspec features --tag ~feature 2>&1)).
-        to include('9 examples, 1 failure, 3 pending')
+      expect(%x(rspec features --tag ~feature 2>&1)).to include('9 examples, 1 failure, 4 pending')
     end
 
     it 'ignores --tag ~type:feature flag when running features' do
-      expect(%x(rspec features --tag ~type:feature 2>&1)).
-        to include('9 examples, 1 failure, 3 pending')
+      expect(%x(rspec features --tag ~type:feature 2>&1)).to include('9 examples, 1 failure, 4 pending')
     end
   end
 
-  context 'runing features specs on their own' do
+  context 'running features specs on their own' do
     before(:all) do
       @result = %x(rspec --tag feature --format documentation 2>&1)
     end
@@ -32,55 +30,39 @@ describe 'The CLI', :type => :integration do
 
     context 'non-existing scenario' do
       it 'shows name of non-existing scenario' do
-        expect(@result).to include(
-          "Scenario: Non-existing scenario"
-        )
+        expect(@result).to include("Scenario: Non-existing scenario")
       end
 
       it 'shows that spec implements non-existing scenario' do
-        expect(@result).to include(
-          "No such scenario in 'features/no_scenario.feature'"
-        )
+        expect(@result).to include("No such scenario in 'features/no_scenario.feature'")
       end
 
       it 'shows line number where missing scenario is mentioned' do
-        expect(@result).to include(
-          "./spec/features/no_scenario_spec.rb:2"
-        )
+        expect(@result).to include("/spec/features/no_scenario_spec.rb:2")
       end
     end
 
     context 'non-existing feature' do
       it 'shows name of non-existing feature' do
-        expect(@result).to include(
-          "Feature: Missing feature"
-        )
+        expect(@result).to include("Feature: Missing feature")
       end
 
       it 'shows that spec implements non-existing feature' do
-        expect(@result).to include(
-          "No such feature in 'features/no_feature.feature'"
-        )
+        expect(@result).to include("No such feature in 'features/no_feature.feature'")
       end
 
       it 'shows line number where missing scenario is mentioned' do
-        expect(@result).to include(
-          "./spec/features/no_feature_spec.rb:3"
-        )
+        expect(@result).to include("/spec/features/no_feature_spec.rb:3")
       end
     end
 
     context 'updated features and scenarios' do
       it 'recognizes and notifies when feature is marked as @updated' do
-        expect(@result).to include(
-          'Feature has been marked as updated'
-        )
+        expect(@result).to include('Feature has been marked as updated')
       end
 
       it 'recognizes and notifies when scenario is marked as @updated' do
-        expect(@result).to include(
-          'Scenario has been marked as updated'
-        )
+        expect(@result).to include('Scenario has been marked as updated')
       end
     end
   end
