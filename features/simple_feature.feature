@@ -8,7 +8,7 @@ Feature: A simple feature
   Scenario: Raising error
     When Running this scenario
     Then Error should be raisen
-  Scenario: Diferant metadata type
+  Scenario: Different metadata type
     When Running this scenario
     Then Type of this scenario should be :controller
   Scenario: Custom metadata tag
