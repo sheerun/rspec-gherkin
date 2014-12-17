@@ -20,9 +20,7 @@ module RSpecGherkin
               spec_path
             else
               RSpecGherkin::Builder.build(path).features.each do |feature|
-                ::RSpec::Core::ExampleGroup.describe(
-                  "Feature: #{feature.name}", :type => :feature, :feature => true
-                ) do
+                ::RSpec::Core::ExampleGroup.describe("Feature: #{feature.name}", :type => :feature, :feature => true) do
                   it do |example|
                     example.metadata[:file_path] = spec_path
                     example.metadata[:line_number] = 1
