@@ -18,6 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "rspec", "~> 3.0"
   s.add_runtime_dependency "gherkin", "~> 2.12.0"
-  s.add_runtime_dependency "capybara", ">= 2.0"
   s.add_development_dependency "rake"
 end
