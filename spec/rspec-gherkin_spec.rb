@@ -48,7 +48,7 @@ describe RSpecGherkin do
     end
   end
 
-  specify '#spec_to_feature and #feature_to_spec should be idempotent' do
+  specify '#spec_to_feature and #feature_to_spec should be independent' do
     p1 = RSpecGherkin.feature_to_spec(RSpecGherkin.spec_to_feature(spec_path))
     p2 = RSpecGherkin.feature_to_spec(feature_path)
     expect(p1).to eq(p2)
