@@ -8,7 +8,7 @@ module RSpecGherkin
 
         # Override feature exclusion filter if running features
         if paths.any? { |path| RSpecGherkin.feature?(path) }
-          ::RSpec.configuration.filter_manager.exclusions.reject! do |key, value|
+          ::RSpec.configuration.filter_manager.exclusions.rules.reject! do |key, value|
             key == :feature || (key == :type && value == 'feature')
           end
         end
@@ -20,10 +20,8 @@ module RSpecGherkin
               spec_path
             else
               RSpecGherkin::Builder.build(path).features.each do |feature|
-                ::RSpec::Core::ExampleGroup.describe(
-                  "Feature: #{feature.name}", :type => :feature, :feature => true
-                ) do
-                  it do
+                ::RSpec::Core::ExampleGroup.describe("Feature: #{feature.name}", :type => :feature, :feature => true) do
+                  it do |example|
                     example.metadata[:file_path] = spec_path
                     example.metadata[:line_number] = 1
                     pending('Not yet implemented')
