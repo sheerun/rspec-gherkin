@@ -2,16 +2,13 @@ require 'spec_helper'
 
 describe 'The CLI', :type => :integration do
   context 'running features from features directory' do
-    #
-    # currently failing. Looks like Rspec may have change the way it loads files in, by the time rspec-loader tries to override the list of tests to run it looks like it's too late..
-    # Needs additional investigation
-    #
+
     it 'ignores --tag ~feature flag when running features' do
-      expect(%x(rspec features --tag ~feature 2>&1)).to include('9 examples, 1 failure, 4 pending')
+      expect(%x(rspec features --tag ~feature 2>&1)).to include('9 examples, 1 failure, 3 pending')
     end
 
     it 'ignores --tag ~type:feature flag when running features' do
-      expect(%x(rspec features --tag ~type:feature 2>&1)).to include('9 examples, 1 failure, 4 pending')
+      expect(%x(rspec features --tag ~type:feature 2>&1)).to include('9 examples, 1 failure, 3 pending')
     end
   end
 
