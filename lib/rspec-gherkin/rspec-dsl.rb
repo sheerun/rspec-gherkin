@@ -1,10 +1,10 @@
-
 class << self
   def feature(name = nil, new_metadata = {}, &block)
     raise ArgumentError.new("requires a name") if name.nil?
 
     new_metadata = ::RSpec.configuration.feature_metadata.merge(new_metadata)
     matching_feature = find_feature(name)
+    new_metadata[:feature_name]= name
 
     if matching_feature
       if matching_feature.tags.include?('updated')
@@ -56,6 +56,7 @@ module RSpecGherkin
         raise ArgumentError.new("requires a name") if name.nil?
 
         matching_scenario = find_scenario(self.metadata[:current_feature], name)
+        new_metadata[:scenario_name]= name
 
         if matching_scenario
           if matching_scenario.tags.include?('updated')
