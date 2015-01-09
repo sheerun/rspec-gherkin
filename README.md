@@ -1,5 +1,7 @@
 # RSpec Gherkin [![Build Status][travis-img-url]][travis-url]
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sheerun/rspec-gherkin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [travis-img-url]: https://travis-ci.org/sheerun/rspec-gherkin.png
 [travis-url]: https://travis-ci.org/rspec-gherkin
 
