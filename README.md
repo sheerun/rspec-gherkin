@@ -1,4 +1,4 @@
-# RSpec Gherkin [![Build Status][travis-img-url]][travis-url][![Coverage Status](https://img.shields.io/coveralls/AlanLGuy/rspec-gherkin.svg)](https://coveralls.io/r/AlanLGuy/rspec-gherkin)
+# RSpec Gherkin [![Build Status][travis-img-url]][travis-url][![Coverage Status](https://travis-ci.org/AlanLGuy/rspec-gherkin.svg?branch=refactor_tests)](https://coveralls.io/r/AlanLGuy/rspec-gherkin?branch=refactor_tests)
 
 [travis-img-url]: https://travis-ci.org/AlanLGuy/rspec-gherkin.svg?branch=master
 [travis-url]: https://travis-ci.org/AlanLGuy/rspec-gherkin
