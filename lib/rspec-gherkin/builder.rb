@@ -142,7 +142,7 @@ module RSpecGherkin
 
     def boolean?(string)
       string =~ (/(true|t|yes|y)$/i) ||
-      string =~ (/(false|f|no|n)$/i)
+          string =~ (/(false|f|no|n)$/i)
     end
 
     def to_bool(string)
@@ -150,8 +150,10 @@ module RSpecGherkin
       return false if string =~ (/(false|f|no|n|0)$/i)
     end
 
+    #TODO Need to come up with better handling of support for JRuby
     def rows_to_array(rows)
-      rows.map { |row| row.cells(&:value) }.drop(1)
+      rows.map { |row| row.cells.map { |cell| RUBY_PLATFORM =~ /java/ ? cell : cell.value } }.drop(1)
     end
+
   end
 end
