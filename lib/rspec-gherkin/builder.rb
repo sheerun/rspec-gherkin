@@ -152,7 +152,11 @@ module RSpecGherkin
 
     #TODO Need to come up with better handling of support for JRuby
     def rows_to_array(rows)
-      rows.map { |row| row.cells.map { |cell| RUBY_PLATFORM =~ /java/ ? cell : cell.value } }.drop(1)
+      if RUBY_PLATFORM =~ /java/
+        rows.map { |row| row.cells }.drop(1)
+      else
+        rows.map { |row| row.cells(&:value) }.drop(1)
+      end
     end
 
   end
