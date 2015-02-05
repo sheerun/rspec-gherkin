@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 feature 'A simple feature' do
   # ensure background is executed as before(:each)
   background do

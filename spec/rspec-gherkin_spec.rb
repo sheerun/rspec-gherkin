@@ -1,6 +1,4 @@
-require 'spec_helper'
-
-describe RSpecGherkin do
+describe RSpecGherkin, spec:true do
   let(:feature_path) { '/project/features/awesome-def_file.feature' }
   let(:spec_path) { '/project/spec/features/awesome-def_file_spec.rb' }
 
