@@ -9,6 +9,8 @@ rvm:
 matrix:
   allow_failures:
     - rvm: ruby-head
+    - rvm: jruby-18mode
+    - rvm: jruby-19mode
 script:
   bundle exec rake full_test
 
