@@ -1,5 +1,5 @@
 Feature: A simple feature
-  Background:
+  Background: a simple background
     Given we live in monster world
   Scenario: A simple scenario
     Given there is a monster
