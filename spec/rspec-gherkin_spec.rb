@@ -1,4 +1,4 @@
-describe RSpecGherkin, spec:true do
+describe RSpecGherkin, unit:true do
   let(:feature_path) { '/project/features/awesome-def_file.feature' }
   let(:spec_path) { '/project/spec/features/awesome-def_file_spec.rb' }
 
