@@ -41,8 +41,11 @@ module RSpecGherkin
     end
 
     class Background
+      include Name
+
       def initialize(raw)
         @raw = raw
+        @name = raw.name
       end
     end
 
