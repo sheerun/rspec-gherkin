@@ -7,3 +7,11 @@ Feature: RSpec gherkin test runner
     Given I have passed in the parameter ~type:feature
     When I execute the test suite against the features directory
     Then tests with type:feature are included in the test suite
+
+
+  Scenario: Running a feature without a spec implemented
+    Given I have a feature without a spec implemented
+    When I execute the test suite
+    Then the feature is marked as pending
+    And I am warned that a spec has not yet been implemented for this file
+

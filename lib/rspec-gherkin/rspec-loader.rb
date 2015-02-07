@@ -20,15 +20,13 @@ module RSpecGherkin
               spec_path
             else
               RSpecGherkin::Builder.build(path).features.each do |feature|
-                ::RSpec::Core::ExampleGroup.describe("Feature: #{feature.name}", :type => :feature, :feature => true) do
+                ::RSpec.describe("Feature: #{feature.name}", :type => :feature, :feature => true) do
                   it do |example|
-                    example.metadata[:file_path] = spec_path
-                    example.metadata[:line_number] = 1
-                    pending('Not yet implemented')
+                    example.metadata[:location] = path << ':1'
+                    skip('No spec implemented for feature')
                   end
-                end.register
+                end
               end
-
               nil
             end
           else

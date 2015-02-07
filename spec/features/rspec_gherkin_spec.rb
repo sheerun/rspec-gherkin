@@ -1,8 +1,12 @@
 feature 'RSpec gherkin test runner' do
 
     scenario 'Run with ~type:feature against features directory' do
-      expect(%x(rspec example_project/features --tag ~feature)).to include('9 examples, 1 failure, 3 pending')
+      expect(%x(rspec example_project/features --tag ~feature)).to include('10 examples, 1 failure, 4 pending')
     end
+
+  scenario 'Running a feature without a spec implemented' do
+    expect(%x(rspec example_project/features/feature_without_spec_file.feature)).to include('No spec implemented for feature')
+  end
 #
 #     scenario 'ignores --tag ~type:feature flag when running features' do
 #       expect(%x(rspec features --tag ~type:feature 2>&1)).to include('9 examples, 1 failure, 3 pending')
