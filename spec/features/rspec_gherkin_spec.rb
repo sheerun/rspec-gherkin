@@ -1,12 +1,26 @@
 feature 'RSpec gherkin test runner' do
 
-    scenario 'Run with ~type:feature against features directory' do
-      expect(%x(rspec example_project/features --tag ~feature)).to include('10 examples, 1 failure, 4 pending')
-    end
+  scenario 'running a feature file' do
+    expect(%x(rspec example_project/features/simple_feature.feature)).to include('4 examples, 1 failure')
+  end
+
+  scenario 'running a spec file' do
+    expect(%x(rspec example_project/spec/features/simple_feature_spec.rb)).to include('4 examples, 1 failure')
+  end
+
+  scenario 'unimplemented scenario', wip: true do
+    expect(%x(rspec example_project/features/error_conditions/unimplemented_scenario.feature)).to include("No such scenario in 'features/error_conditions/unimplemented_scenario.feature")
+  end
 
   scenario 'Running a feature without a spec implemented' do
-    expect(%x(rspec example_project/features/feature_without_spec_file.feature)).to include('No spec implemented for feature')
+    expect(%x(rspec example_project/features/error_conditions/feature_without_spec_file.feature)).to include('No spec implemented for feature')
   end
+
+  scenario 'Run with ~type:feature against features directory' do
+    expect(%x(rspec example_project/features --tag ~feature)).to include('11 examples, 1 failure, 5 pending')
+  end
+
+
 #
 #     scenario 'ignores --tag ~type:feature flag when running features' do
 #       expect(%x(rspec features --tag ~type:feature 2>&1)).to include('9 examples, 1 failure, 3 pending')
@@ -83,5 +97,5 @@ feature 'RSpec gherkin test runner' do
 #   # end
 #
 #   # it "includes the right step name when steps call steps" do
-  #   @result.should include("No such step: 'this is an unimplemented step'")
+#   @result.should include("No such step: 'this is an unimplemented step'")
 end
