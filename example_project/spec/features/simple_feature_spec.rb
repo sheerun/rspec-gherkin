@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 feature 'A simple feature' do
   # ensure background is executed as before(:each)
   background do
@@ -15,12 +13,12 @@ feature 'A simple feature' do
     raise ArgumentError.new("Your argument is invalid!")
   end
 
-  scenario 'Diferant metadata type', :type => :controller, :feature => false do
-    expect(example.metadata[:type]).to eq(:controller)
-    expect(example.metadata[:feature]).to eq(false)
+  scenario 'Different metadata type', :type => :controller, :feature => false do
+    expect(RSpec.current_example.metadata[:type]).to eq(:controller)
+    expect(RSpec.current_example.metadata[:feature]).to eq(false)
   end
 
   scenario 'Custom metadata tag', :custom => "foobar" do
-    expect(example.metadata[:custom]).to eq("foobar")
+    expect(RSpec.current_example.metadata[:custom]).to eq("foobar")
   end
 end

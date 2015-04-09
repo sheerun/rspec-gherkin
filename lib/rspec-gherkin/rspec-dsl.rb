@@ -1,26 +1,21 @@
-require "capybara/rspec"
-
 class << self
   def feature(name = nil, new_metadata = {}, &block)
     raise ArgumentError.new("requires a name") if name.nil?
 
     new_metadata = ::RSpec.configuration.feature_metadata.merge(new_metadata)
     matching_feature = find_feature(name)
+    new_metadata[:feature_name]= name
 
     if matching_feature
       if matching_feature.tags.include?('updated')
-        pending_feature(name, new_metadata, block.source_location, [
-          "Feature has been marked as updated",
-          "Update specs for this feature and remove the @updated tag",
-          "Feature file: '#{feature_path(block.source_location)}'"
-        ])
+        pending_feature(name, new_metadata, block.source_location,
+                        "Feature has been marked as updated\n \t# Update specs for this feature and remove the @updated tag\n \t# Feature file: '#{feature_path(block.source_location)}"
+        )
       else
         describe("Feature: #{name}", new_metadata.merge(:current_feature => matching_feature), &block)
       end
     else
-      pending_feature(name, new_metadata, block.source_location,
-        "No such feature in '#{feature_path(block.source_location)}'"
-      )
+      pending_feature(name, new_metadata, block.source_location, "No such feature in '#{feature_path(block.source_location)}'")
     end
   end
 
@@ -38,13 +33,13 @@ class << self
 
   def pending_feature(name, new_metadata, spec_location, reason)
     describe "Feature: #{name}", new_metadata do
-      it do
+      it do |example|
         example.metadata.merge!(
-          file_path: spec_location[0],
-          line_number: spec_location[1]
+            file_path: spec_location[0],
+            location: "#{spec_location[0]}:#{spec_location[1]}"
         )
-
-        pending [*reason].join("\n    #  ")
+        pending reason
+        raise "pending"
       end
     end
   end
@@ -61,14 +56,13 @@ module RSpecGherkin
         raise ArgumentError.new("requires a name") if name.nil?
 
         matching_scenario = find_scenario(self.metadata[:current_feature], name)
+        new_metadata[:scenario_name]= name
 
         if matching_scenario
           if matching_scenario.tags.include?('updated')
-            pending_scenario(name, new_metadata, block.source_location, [
-              "Scenario has been marked as updated",
-              "Update specs for this scenario and remove the @updated tag",
-              "Feature file: '#{feature_path(block.source_location)}'"
-            ])
+            pending_scenario(name, new_metadata, block.source_location,
+                             "Scenario has been marked as updated\n \t# Update specs for this scenario and remove the @updated tag\n \t# Feature file: '#{feature_path(block.source_location)}'"
+            )
           elsif matching_scenario.arguments
             specify "Scenario: #{name}", new_metadata do
               instance_exec(*matching_scenario.arguments, &block)
@@ -77,9 +71,7 @@ module RSpecGherkin
             specify("Scenario: #{name}", new_metadata, &block)
           end
         else
-          pending_scenario(name, new_metadata, block.source_location,
-            "No such scenario in '#{feature_path(block.source_location)}'"
-          )
+          pending_scenario(name, new_metadata, block.source_location, "No such scenario in '#{feature_path(block.source_location)}'")
         end
       end
 
@@ -96,15 +88,13 @@ module RSpecGherkin
       end
 
       def pending_scenario(name, new_metadata, spec_location, reason)
-        specify name, new_metadata do
+        specify name, new_metadata do |example|
           example.metadata.merge!(
-            file_path: spec_location[0],
-            line_number: spec_location[1]
+              full_description: "Scenario: #{name}",
+              location: "#{spec_location[0]}:#{spec_location[1]}"
           )
-          example.metadata[:example_group].merge!(
-            description_args: ["Scenario:"]
-          )
-          pending [*reason].join("\n    #  ")
+          pending reason
+          raise('pending')
         end
       end
     end

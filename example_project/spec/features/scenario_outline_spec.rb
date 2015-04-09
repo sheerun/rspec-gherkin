@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 feature 'using scenario outlines' do
   scenario 'a simple outline' do |hp, damage, state, happy|
     expect(hp).to be_a(Float)
